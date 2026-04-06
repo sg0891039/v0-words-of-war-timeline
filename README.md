@@ -1,35 +1,23 @@
-# v0-words-of-war-timeline
+# Words of War — A Timeline
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+A static HTML timeline documenting every verified public statement by the 47th President of the United States on the Iran conflict — documented, timestamped, and sourced.
 
-## Built with v0
+## About
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+This is a single-page static website that presents a chronological timeline of public statements. No build step required.
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_lTAeu4KnXd8hseuqyrzL9BMimLbY)
+## Deployment
 
-## Getting Started
+This site is deployed on [Vercel](https://vercel.com) as a static site. Simply push to the repository and Vercel will serve the `index.html` file directly.
 
-First, run the development server:
+## Local Development
+
+To view locally, simply open `index.html` in your browser, or use a simple HTTP server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+npx serve .
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## License
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-## Learn More
-
-To learn more, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
-
-<a href="https://v0.app/chat/api/kiro/clone/sg0891039/v0-words-of-war-timeline" alt="Open in Kiro"><img src="https://pdgvvgmkdvyeydso.public.blob.vercel-storage.com/open%20in%20kiro.svg?sanitize=true" /></a>
+All content is for informational purposes only.
