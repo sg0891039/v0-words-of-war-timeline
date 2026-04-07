@@ -1,694 +1,1301 @@
 <!DOCTYPE html>
 <!-- Words of War - Static HTML Timeline -->
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Words of War — A Timeline</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0a0a0a;
-  --fg:#e8e4df;
-  --accent:#c43e2a;
-  --accent2:#d4a853;
-  --muted:#5a5550;
-  --card:#111110;
-  --serif:'Playfair Display',Georgia,serif;
-  --mono:'JetBrains Mono',monospace;
-  --sans:'Instrument Sans',sans-serif;
-}
-html{scroll-behavior:smooth;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--accent) var(--bg)}
-body{background:var(--bg);color:var(--fg);font-family:var(--sans);overflow-x:hidden;cursor:crosshair}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Words of War — A Timeline</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
 
-/* GRAIN OVERLAY */
-body::after{
-  content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:9999;opacity:.5;
-}
+    :root {
+      --bg: #0a0a0a;
+      --fg: #e8e4df;
+      --accent: #c43e2a;
+      --accent2: #d4a853;
+      --muted: #5a5550;
+      --card: #111110;
+      --serif: 'Playfair Display', Georgia, serif;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Instrument Sans', sans-serif;
+    }
 
-/* CUSTOM CURSOR */
-.cursor-dot{
-  position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;
-  pointer-events:none;z-index:9998;mix-blend-mode:difference;
-  transition:transform .1s ease;
-}
-.cursor-ring{
-  position:fixed;width:40px;height:40px;border:1px solid var(--accent);border-radius:50%;
-  pointer-events:none;z-index:9998;mix-blend-mode:difference;
-  transition:width .3s, height .3s;
-}
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) var(--bg)
+    }
 
-/* LOADER */
-.loader{
-  position:fixed;inset:0;background:var(--bg);z-index:10000;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:opacity .8s cubic-bezier(.77,0,.175,1), visibility .8s;
-}
-.loader.done{opacity:0;visibility:hidden;pointer-events:none}
-.loader-text{
-  font-family:var(--serif);font-size:clamp(2rem,6vw,5rem);font-weight:900;
-  letter-spacing:-.03em;overflow:hidden;
-}
-.loader-text span{
-  display:inline-block;transform:translateY(120%);
-  animation:slideUp .6s cubic-bezier(.16,1,.3,1) forwards;
-}
-.loader-sub{
-  font-family:var(--mono);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--muted);margin-top:1.5rem;opacity:0;animation:fadeIn .5s .8s forwards;
-}
-.loader-bar{
-  width:200px;height:1px;background:var(--muted);margin-top:2rem;position:relative;overflow:hidden;
-  opacity:0;animation:fadeIn .5s .8s forwards;
-}
-.loader-bar::after{
-  content:'';position:absolute;left:0;top:0;height:100%;width:0;background:var(--accent);
-  animation:loadBar 2s 1s cubic-bezier(.77,0,.175,1) forwards;
-}
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      overflow-x: hidden;
+      cursor: crosshair
+    }
 
-@keyframes slideUp{to{transform:translateY(0)}}
-@keyframes fadeIn{to{opacity:1}}
-@keyframes loadBar{to{width:100%}}
+    /* GRAIN OVERLAY */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .5;
+    }
 
-/* NAV */
-nav{
-  position:fixed;top:0;left:0;width:100%;z-index:1000;
-  padding:1.5rem 3rem;display:flex;justify-content:space-between;align-items:center;
-  mix-blend-mode:difference;
-}
-nav .logo{
-  font-family:var(--mono);font-size:.65rem;letter-spacing:.4em;text-transform:uppercase;
-  color:var(--fg);
-}
-nav .nav-right{display:flex;gap:2rem;align-items:center}
-nav .nav-right a{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--muted);text-decoration:none;transition:color .3s;
-}
-nav .nav-right a:hover{color:var(--fg)}
+    /* CUSTOM CURSOR */
+    .cursor-dot {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: difference;
+      transition: transform .1s ease;
+    }
 
-/* HERO */
-.hero{
-  height:100vh;display:flex;flex-direction:row;justify-content:center;align-items:center;
-  position:relative;overflow:hidden;
-}
-.hero-bg-text{
-  position:absolute;font-family:var(--serif);font-weight:900;
-  font-size:clamp(10rem,30vw,28rem);color:transparent;
-  -webkit-text-stroke:1px rgba(255,255,255,.10);
-  line-height:.85;white-space:nowrap;
-  animation:driftLeft 40s linear infinite;
-  top:50%;transform:translateY(-50%);
-  text-shadow:0 0 60px rgba(196,62,42,.10);
-}
-@keyframes driftLeft{
-  0%{transform:translateY(-50%) translateX(10%)}
-  100%{transform:translateY(-50%) translateX(-50%)}
-}
-.hero-content{position:relative;z-index:2;text-align:center;padding:0 2rem}
-.hero-tag{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.5em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:2rem;
-  opacity:0;animation:fadeIn .6s 3.2s forwards;
-}
-.hero h1{
-  font-family:var(--serif);font-weight:900;
-  font-size:clamp(3rem,9vw,8rem);line-height:.9;letter-spacing:-.04em;
-  opacity:0;animation:fadeIn .8s 3.4s forwards;
-}
-.hero h1 em{font-style:italic;color:var(--accent)}
-.hero-desc{
-  font-family:var(--sans);font-size:clamp(.85rem,1.2vw,1.05rem);
-  color:var(--muted);max-width:500px;margin:2rem auto 0;line-height:1.7;
-  opacity:0;animation:fadeIn .6s 3.8s forwards;
-}
-.scroll-indicator{
-  position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:.5rem;
-  opacity:0;animation:fadeIn .6s 4.2s forwards;
-}
-.scroll-indicator span{
-  font-family:var(--mono);font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);
-}
-.scroll-line{
-  width:1px;height:40px;background:var(--muted);position:relative;overflow:hidden;
-}
-.scroll-line::after{
-  content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--accent);
-  animation:scrollPulse 2s ease-in-out infinite;
-}
-@keyframes scrollPulse{
-  0%{top:-100%}50%{top:100%}100%{top:100%}
-}
+    .cursor-ring {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: difference;
+      transition: width .3s, height .3s;
+    }
 
-/* SECTION HEADERS */
-.section-header{
-  padding:8rem 3rem 4rem;max-width:900px;margin:0 auto;
-}
-.section-header .section-tag{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.5em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:1.5rem;display:block;
-}
-.section-header h2{
-  font-family:var(--serif);font-size:clamp(2rem,5vw,4rem);font-weight:900;
-  line-height:1.05;letter-spacing:-.03em;
-}
+    /* LOADER */
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity .8s cubic-bezier(.77, 0, .175, 1), visibility .8s;
+    }
 
-/* TIMELINE */
-.timeline{
-  position:relative;padding:2rem 0 8rem;max-width:1200px;margin:0 auto;
-}
-.timeline::before{
-  content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;
-  background:linear-gradient(to bottom,transparent,var(--muted) 10%,var(--muted) 90%,transparent);
-}
-.timeline-item{
-  position:relative;width:50%;padding:2rem 4rem;
-  opacity:0;transform:translateY(60px);
-  transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
-}
-.timeline-item.visible{opacity:1;transform:translateY(0)}
-.timeline-item:nth-child(odd){margin-left:0;text-align:right;padding-right:5rem}
-.timeline-item:nth-child(even){margin-left:50%;text-align:left;padding-left:5rem}
+    .loader.done {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none
+    }
 
-.timeline-item::before{
-  content:'';position:absolute;top:3rem;width:10px;height:10px;
-  border-radius:50%;background:var(--accent);border:2px solid var(--bg);
-  z-index:2;
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
-}
-.timeline-item:nth-child(odd)::before{right:-5px}
-.timeline-item:nth-child(even)::before{left:-5px}
-.timeline-item.visible::before{
-  box-shadow:0 0 20px rgba(196,62,42,.4);
-}
+    .loader-text {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 6vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -.03em;
+      overflow: hidden;
+    }
 
-.timeline-item::after{
-  content:'';position:absolute;top:calc(3rem + 4px);height:1px;width:3rem;
-  background:var(--muted);
-}
-.timeline-item:nth-child(odd)::after{right:0}
-.timeline-item:nth-child(even)::after{left:0}
+    .loader-text span {
+      display: inline-block;
+      transform: translateY(120%);
+      animation: slideUp .6s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
 
-.timeline-date{
-  font-family:var(--mono);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--accent2);margin-bottom:.75rem;display:block;
-}
-.timeline-quote{
-  font-family:var(--serif);font-size:clamp(1.1rem,2vw,1.6rem);font-weight:700;
-  line-height:1.35;letter-spacing:-.01em;color:var(--fg);
-  position:relative;
-}
-.timeline-quote::before{
-  content:'\201C';font-size:4rem;position:absolute;
-  color:var(--accent);opacity:.3;line-height:1;
-  font-family:var(--serif);
-}
-.timeline-item:nth-child(odd) .timeline-quote::before{right:calc(100% + .5rem);top:-.5rem}
-.timeline-item:nth-child(even) .timeline-quote::before{left:-.3rem;top:-.5rem}
-.timeline-item:nth-child(even) .timeline-quote{padding-left:1.5rem}
+    .loader-sub {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 1.5rem;
+      opacity: 0;
+      animation: fadeIn .5s .8s forwards;
+    }
 
-.timeline-context{
-  font-family:var(--sans);font-size:.8rem;color:var(--muted);line-height:1.6;
-  margin-top:.75rem;
-}
-.timeline-source{
-  display:inline-block;margin-top:.75rem;font-family:var(--mono);
-  font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;
-  color:var(--muted);padding:.3rem .6rem;
-  border:1px solid rgba(255,255,255,.08);
-  text-decoration:none;transition:border-color .3s, color .3s;
-}
-.timeline-source:hover{border-color:var(--accent);color:var(--accent)}
+    .loader-bar {
+      width: 200px;
+      height: 1px;
+      background: var(--muted);
+      margin-top: 2rem;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeIn .5s .8s forwards;
+    }
 
-/* FEATURED QUOTE */
-.featured-quote{
-  min-height:80vh;display:flex;align-items:center;justify-content:center;
-  padding:6rem 3rem;position:relative;overflow:hidden;
-}
-.featured-quote .bg-date{
-  position:absolute;font-family:var(--mono);font-size:clamp(6rem,20vw,18rem);
-  font-weight:700;color:rgba(255,255,255,.02);white-space:nowrap;
-  top:50%;left:50%;transform:translate(-50%,-50%);
-}
-.featured-quote blockquote{
-  position:relative;z-index:2;max-width:900px;text-align:center;
-}
-.featured-quote blockquote p{
-  font-family:var(--serif);font-size:clamp(1.8rem,4vw,3.5rem);font-weight:900;
-  line-height:1.15;letter-spacing:-.03em;
-}
-.featured-quote blockquote p .word{
-  display:inline-block;opacity:0;transform:translateY(30px) rotateX(-40deg);
-  transition:opacity .5s, transform .5s cubic-bezier(.16,1,.3,1);
-}
-.featured-quote.visible blockquote p .word{opacity:1;transform:translateY(0) rotateX(0)}
-.featured-quote cite{
-  display:block;margin-top:2rem;font-family:var(--mono);font-size:.6rem;
-  letter-spacing:.3em;text-transform:uppercase;color:var(--muted);font-style:normal;
-}
+    .loader-bar::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0;
+      background: var(--accent);
+      animation: loadBar 2s 1s cubic-bezier(.77, 0, .175, 1) forwards;
+    }
 
-/* STATS STRIP */
-.stats{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:1px;background:rgba(255,255,255,.05);margin:0;
-}
-.stat{
-  background:var(--bg);padding:3rem 2rem;text-align:center;
-  opacity:0;transform:scale(.95);
-  transition:opacity .6s, transform .6s cubic-bezier(.16,1,.3,1);
-}
-.stat.visible{opacity:1;transform:scale(1)}
-.stat-num{
-  font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;
-  color:var(--accent);line-height:1;
-}
-.stat-label{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--muted);margin-top:.75rem;display:block;
-}
+    @keyframes slideUp {
+      to {
+        transform: translateY(0)
+      }
+    }
 
-/* FOOTER */
-footer{
-  padding:6rem 3rem 3rem;text-align:center;border-top:1px solid rgba(255,255,255,.05);
-}
-footer p{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;
-  color:var(--muted);text-transform:uppercase;line-height:2;
-}
-footer .disclaimer{
-  font-family:var(--sans);font-size:.75rem;color:var(--muted);
-  max-width:600px;margin:1rem auto 0;line-height:1.6;letter-spacing:0;
-  text-transform:none;
-}
+    @keyframes fadeIn {
+      to {
+        opacity: 1
+      }
+    }
 
-/* HORIZONTAL MARQUEE */
-.marquee{
-  overflow:hidden;white-space:nowrap;padding:2rem 0;
-  border-top:1px solid rgba(255,255,255,.05);
-  border-bottom:1px solid rgba(255,255,255,.05);
-}
-.marquee-inner{
-  display:inline-block;animation:marquee 30s linear infinite;
-}
-.marquee-inner span{
-  font-family:var(--serif);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:900;
-  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.08);
-  margin-right:3rem;
-}
-.marquee-inner span.filled{
-  color:var(--accent);-webkit-text-stroke:none;opacity:.3;
-}
-@keyframes marquee{
-  0%{transform:translateX(0)}100%{transform:translateX(-50%)}
-}
+    @keyframes loadBar {
+      to {
+        width: 100%
+      }
+    }
 
-/* GLITCH TEXT */
-.glitch{position:relative;display:inline-block}
-.glitch::before,.glitch::after{
-  content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;
-}
-.glitch::before{
-  animation:glitch1 2s infinite linear alternate-reverse;
-  clip-path:polygon(0 0,100% 0,100% 45%,0 45%);
-  color:var(--accent);
-  text-shadow:3px 0 var(--accent);
-}
-.glitch::after{
-  animation:glitch2 1.5s infinite linear alternate-reverse;
-  clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%);
-  color:var(--accent2);
-  text-shadow:-3px 0 var(--accent2);
-}
-@keyframes glitch1{
-  0%,80%{transform:translate(0)}
-  81%{transform:translate(-4px,2px)}
-  83%{transform:translate(5px,-2px)}
-  85%{transform:translate(-3px,1px)}
-  87%{transform:translate(4px,-1px)}
-  89%,100%{transform:translate(0)}
-}
-@keyframes glitch2{
-  0%,75%{transform:translate(0)}
-  76%{transform:translate(4px,2px)}
-  78%{transform:translate(-5px,-2px)}
-  80%{transform:translate(3px,1px)}
-  82%{transform:translate(-4px,-1px)}
-  84%,100%{transform:translate(0)}
-}
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      mix-blend-mode: difference;
+    }
 
-/* RESPONSIVE */
-@media(max-width:900px){
-  .timeline::before{left:2rem}
-  .timeline-item{width:100%!important;margin-left:0!important;text-align:left!important;padding:2rem 2rem 2rem 5rem!important}
-  .timeline-item::before{left:calc(2rem - 5px)!important;right:auto!important}
-  .timeline-item::after{left:calc(2rem + 5px)!important;right:auto!important;width:1.5rem!important}
-  .timeline-item .timeline-quote::before{left:-.3rem!important;right:auto!important;top:-.5rem!important}
-  .timeline-item .timeline-quote{padding-left:1.5rem!important}
-  nav{padding:1rem 1.5rem}
-  .section-header{padding:5rem 1.5rem 2rem}
-  .featured-quote{padding:4rem 1.5rem}
-}
-@media(max-width:600px){
-  nav .nav-right{display:none}
-}
+    nav .logo {
+      font-family: var(--mono);
+      font-size: .65rem;
+      letter-spacing: .4em;
+      text-transform: uppercase;
+      color: var(--fg);
+    }
 
-/* PARALLAX SHAPES */
-.shape{
-  position:absolute;pointer-events:none;z-index:0;
-}
-.shape-circle{
-  width:300px;height:300px;border-radius:50%;
-  border:1px solid rgba(196,62,42,.08);
-}
-.shape-line{
-  width:200px;height:1px;background:rgba(212,168,83,.1);
-  transform:rotate(-30deg);
-}
+    nav .nav-right {
+      display: flex;
+      gap: 2rem;
+      align-items: center
+    }
 
-/* HERO PORTRAIT */
-.hero-portrait-wrap{
-  position:absolute;right:3%;top:50%;transform:translateY(-50%);
-  width:clamp(300px,34vw,520px);height:auto;z-index:1;
-  opacity:0;animation:fadeIn 1.2s 3.6s forwards;
-}
-.hero-portrait-glitch{
-  position:relative;
-}
-.hero-portrait-glitch > img{
-  width:100%;height:auto;display:block;position:relative;z-index:1;
-  filter:grayscale(1) contrast(1.15) brightness(.85);
-}
-/* Glitch duplicate layers */
-.hero-portrait-glitch .gl{
-  position:absolute;top:0;left:0;width:100%;height:100%;
-  z-index:2;pointer-events:none;overflow:hidden;
-}
-.hero-portrait-glitch .gl img{
-  width:100%;height:auto;display:block;
-  filter:grayscale(1) contrast(1.4) brightness(.65);
-}
-.hero-portrait-glitch .gl-1{
-  animation:pGlitch1 3s infinite linear;
-  opacity:.7;mix-blend-mode:lighten;
-}
-.hero-portrait-glitch .gl-2{
-  animation:pGlitch2 2.5s infinite linear;
-  opacity:.55;mix-blend-mode:lighten;
-}
-@keyframes pGlitch1{
-  0%,75%{transform:translate(0);clip-path:inset(0 0 0 0)}
-  76%{transform:translate(-10px,5px);clip-path:inset(5% 0 60% 0)}
-  78%{transform:translate(8px,-4px);clip-path:inset(25% 0 35% 0)}
-  80%{transform:translate(-6px,6px);clip-path:inset(50% 0 15% 0)}
-  82%{transform:translate(12px,-3px);clip-path:inset(70% 0 5% 0)}
-  84%,100%{transform:translate(0);clip-path:inset(0 0 0 0)}
-}
-@keyframes pGlitch2{
-  0%,70%{transform:translate(0);clip-path:inset(0 0 0 0)}
-  71%{transform:translate(8px,4px);clip-path:inset(8% 0 55% 0)}
-  73%{transform:translate(-12px,-5px);clip-path:inset(35% 0 30% 0)}
-  75%{transform:translate(7px,5px);clip-path:inset(60% 0 12% 0)}
-  77%{transform:translate(-9px,-4px);clip-path:inset(80% 0 3% 0)}
-  79%,100%{transform:translate(0);clip-path:inset(0 0 0 0)}
-}
-/* Scanlines */
-.hero-portrait-glitch::after{
-  content:'';position:absolute;inset:0;z-index:5;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.1) 3px,rgba(0,0,0,.1) 4px);
-}
+    nav .nav-right a {
+      font-family: var(--mono);
+      font-size: .6rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .3s;
+    }
+
+    nav .nav-right a:hover {
+      color: var(--fg)
+    }
+
+    /* HERO */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-text {
+      position: absolute;
+      font-family: var(--serif);
+      font-weight: 900;
+      font-size: clamp(10rem, 30vw, 28rem);
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, .10);
+      line-height: .85;
+      white-space: nowrap;
+      animation: driftLeft 40s linear infinite;
+      top: 50%;
+      transform: translateY(-50%);
+      text-shadow: 0 0 60px rgba(196, 62, 42, .10);
+    }
+
+    @keyframes driftLeft {
+      0% {
+        transform: translateY(-50%) translateX(10%)
+      }
+
+      100% {
+        transform: translateY(-50%) translateX(-50%)
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 2rem
+    }
+
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: .6rem;
+      letter-spacing: .5em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeIn .6s 3.2s forwards;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-weight: 900;
+      font-size: clamp(3rem, 9vw, 8rem);
+      line-height: .9;
+      letter-spacing: -.04em;
+      opacity: 0;
+      animation: fadeIn .8s 3.4s forwards;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent)
+    }
+
+    .hero-desc {
+      font-family: var(--sans);
+      font-size: clamp(.85rem, 1.2vw, 1.05rem);
+      color: var(--muted);
+      max-width: 500px;
+      margin: 2rem auto 0;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeIn .6s 3.8s forwards;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      opacity: 0;
+      animation: fadeIn .6s 4.2s forwards;
+    }
+
+    .scroll-indicator span {
+      font-family: var(--mono);
+      font-size: .55rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: var(--muted);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--accent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0% {
+        top: -100%
+      }
+
+      50% {
+        top: 100%
+      }
+
+      100% {
+        top: 100%
+      }
+    }
+
+    /* SECTION HEADERS */
+    .section-header {
+      padding: 8rem 3rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-header .section-tag {
+      font-family: var(--mono);
+      font-size: .6rem;
+      letter-spacing: .5em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .section-header h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -.03em;
+    }
+
+    /* TIMELINE */
+    .timeline {
+      position: relative;
+      padding: 2rem 0 8rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--muted) 10%, var(--muted) 90%, transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      width: 50%;
+      padding: 2rem 4rem;
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity .8s cubic-bezier(.16, 1, .3, 1), transform .8s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .timeline-item:nth-child(odd) {
+      margin-left: 0;
+      text-align: right;
+      padding-right: 5rem
+    }
+
+    .timeline-item:nth-child(even) {
+      margin-left: 50%;
+      text-align: left;
+      padding-left: 5rem
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      top: 3rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      z-index: 2;
+      transition: transform .3s cubic-bezier(.34, 1.56, .64, 1), box-shadow .3s;
+    }
+
+    .timeline-item:nth-child(odd)::before {
+      right: -5px
+    }
+
+    .timeline-item:nth-child(even)::before {
+      left: -5px
+    }
+
+    .timeline-item.visible::before {
+      box-shadow: 0 0 20px rgba(196, 62, 42, .4);
+    }
+
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      top: calc(3rem + 4px);
+      height: 1px;
+      width: 3rem;
+      background: var(--muted);
+    }
+
+    .timeline-item:nth-child(odd)::after {
+      right: 0
+    }
+
+    .timeline-item:nth-child(even)::after {
+      left: 0
+    }
+
+    .timeline-date {
+      font-family: var(--mono);
+      font-size: .65rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: .75rem;
+      display: block;
+    }
+
+    .timeline-quote {
+      font-family: var(--serif);
+      font-size: clamp(1.1rem, 2vw, 1.6rem);
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: -.01em;
+      color: var(--fg);
+      position: relative;
+    }
+
+    .timeline-quote::before {
+      content: '\201C';
+      font-size: 4rem;
+      position: absolute;
+      color: var(--accent);
+      opacity: .3;
+      line-height: 1;
+      font-family: var(--serif);
+    }
+
+    .timeline-item:nth-child(odd) .timeline-quote::before {
+      right: calc(100% + .5rem);
+      top: -.5rem
+    }
+
+    .timeline-item:nth-child(even) .timeline-quote::before {
+      left: -.3rem;
+      top: -.5rem
+    }
+
+    .timeline-item:nth-child(even) .timeline-quote {
+      padding-left: 1.5rem
+    }
+
+    .timeline-context {
+      font-family: var(--sans);
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: .75rem;
+    }
+
+    .timeline-source {
+      display: inline-block;
+      margin-top: .75rem;
+      font-family: var(--mono);
+      font-size: .55rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: .3rem .6rem;
+      border: 1px solid rgba(255, 255, 255, .08);
+      text-decoration: none;
+      transition: border-color .3s, color .3s;
+    }
+
+    .timeline-source:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    /* FEATURED QUOTE */
+    .featured-quote {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .featured-quote .bg-date {
+      position: absolute;
+      font-family: var(--mono);
+      font-size: clamp(6rem, 20vw, 18rem);
+      font-weight: 700;
+      color: rgba(255, 255, 255, .02);
+      white-space: nowrap;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .featured-quote blockquote {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      text-align: center;
+    }
+
+    .featured-quote blockquote p {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -.03em;
+    }
+
+    .featured-quote blockquote p .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(30px) rotateX(-40deg);
+      transition: opacity .5s, transform .5s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .featured-quote.visible blockquote p .word {
+      opacity: 1;
+      transform: translateY(0) rotateX(0)
+    }
+
+    .featured-quote cite {
+      display: block;
+      margin-top: 2rem;
+      font-family: var(--mono);
+      font-size: .6rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-style: normal;
+    }
+
+    /* STATS STRIP */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: rgba(255, 255, 255, .05);
+      margin: 0;
+    }
+
+    .stat {
+      background: var(--bg);
+      padding: 3rem 2rem;
+      text-align: center;
+      opacity: 0;
+      transform: scale(.95);
+      transition: opacity .6s, transform .6s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .stat.visible {
+      opacity: 1;
+      transform: scale(1)
+    }
+
+    .stat-num {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: .6rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: .75rem;
+      display: block;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 6rem 3rem 3rem;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, .05);
+    }
+
+    footer p {
+      font-family: var(--mono);
+      font-size: .6rem;
+      letter-spacing: .2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      line-height: 2;
+    }
+
+    footer .disclaimer {
+      font-family: var(--sans);
+      font-size: .75rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 1rem auto 0;
+      line-height: 1.6;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    /* HORIZONTAL MARQUEE */
+    .marquee {
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 2rem 0;
+      border-top: 1px solid rgba(255, 255, 255, .05);
+      border-bottom: 1px solid rgba(255, 255, 255, .05);
+    }
+
+    .marquee-inner {
+      display: inline-block;
+      animation: marquee 30s linear infinite;
+    }
+
+    .marquee-inner span {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, .08);
+      margin-right: 3rem;
+    }
+
+    .marquee-inner span.filled {
+      color: var(--accent);
+      -webkit-text-stroke: none;
+      opacity: .3;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0)
+      }
+
+      100% {
+        transform: translateX(-50%)
+      }
+    }
+
+    /* GLITCH TEXT */
+    .glitch {
+      position: relative;
+      display: inline-block
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .glitch::before {
+      animation: glitch1 2s infinite linear alternate-reverse;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+      color: var(--accent);
+      text-shadow: 3px 0 var(--accent);
+    }
+
+    .glitch::after {
+      animation: glitch2 1.5s infinite linear alternate-reverse;
+      clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+      color: var(--accent2);
+      text-shadow: -3px 0 var(--accent2);
+    }
+
+    @keyframes glitch1 {
+
+      0%,
+      80% {
+        transform: translate(0)
+      }
+
+      81% {
+        transform: translate(-4px, 2px)
+      }
+
+      83% {
+        transform: translate(5px, -2px)
+      }
+
+      85% {
+        transform: translate(-3px, 1px)
+      }
+
+      87% {
+        transform: translate(4px, -1px)
+      }
+
+      89%,
+      100% {
+        transform: translate(0)
+      }
+    }
+
+    @keyframes glitch2 {
+
+      0%,
+      75% {
+        transform: translate(0)
+      }
+
+      76% {
+        transform: translate(4px, 2px)
+      }
+
+      78% {
+        transform: translate(-5px, -2px)
+      }
+
+      80% {
+        transform: translate(3px, 1px)
+      }
+
+      82% {
+        transform: translate(-4px, -1px)
+      }
+
+      84%,
+      100% {
+        transform: translate(0)
+      }
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:900px) {
+      .timeline::before {
+        left: 2rem
+      }
+
+      .timeline-item {
+        width: 100% !important;
+        margin-left: 0 !important;
+        text-align: left !important;
+        padding: 2rem 2rem 2rem 5rem !important
+      }
+
+      .timeline-item::before {
+        left: calc(2rem - 5px) !important;
+        right: auto !important
+      }
+
+      .timeline-item::after {
+        left: calc(2rem + 5px) !important;
+        right: auto !important;
+        width: 1.5rem !important
+      }
+
+      .timeline-item .timeline-quote::before {
+        left: -.3rem !important;
+        right: auto !important;
+        top: -.5rem !important
+      }
+
+      .timeline-item .timeline-quote {
+        padding-left: 1.5rem !important
+      }
+
+      nav {
+        padding: 1rem 1.5rem
+      }
+
+      .section-header {
+        padding: 5rem 1.5rem 2rem
+      }
+
+      .featured-quote {
+        padding: 4rem 1.5rem
+      }
+    }
+
+    @media(max-width:600px) {
+      nav .nav-right {
+        display: none
+      }
+    }
+
+    /* PARALLAX SHAPES */
+    .shape {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .shape-circle {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 1px solid rgba(196, 62, 42, .08);
+    }
+
+    .shape-line {
+      width: 200px;
+      height: 1px;
+      background: rgba(212, 168, 83, .1);
+      transform: rotate(-30deg);
+    }
+
+    /* HERO PORTRAIT */
+    .hero-portrait-wrap {
+      position: absolute;
+      right: 3%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: clamp(300px, 34vw, 520px);
+      height: auto;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeIn 1.2s 3.6s forwards;
+    }
+
+    .hero-portrait-glitch {
+      position: relative;
+    }
+
+    .hero-portrait-glitch>img {
+      width: 100%;
+      height: auto;
+      display: block;
+      position: relative;
+      z-index: 1;
+      filter: grayscale(1) contrast(1.15) brightness(.85);
+    }
+
+    /* Glitch duplicate layers */
+    .hero-portrait-glitch .gl {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hero-portrait-glitch .gl img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: grayscale(1) contrast(1.4) brightness(.65);
+    }
+
+    .hero-portrait-glitch .gl-1 {
+      animation: pGlitch1 3s infinite linear;
+      opacity: .7;
+      mix-blend-mode: lighten;
+    }
+
+    .hero-portrait-glitch .gl-2 {
+      animation: pGlitch2 2.5s infinite linear;
+      opacity: .55;
+      mix-blend-mode: lighten;
+    }
+
+    @keyframes pGlitch1 {
+
+      0%,
+      75% {
+        transform: translate(0);
+        clip-path: inset(0 0 0 0)
+      }
+
+      76% {
+        transform: translate(-10px, 5px);
+        clip-path: inset(5% 0 60% 0)
+      }
+
+      78% {
+        transform: translate(8px, -4px);
+        clip-path: inset(25% 0 35% 0)
+      }
+
+      80% {
+        transform: translate(-6px, 6px);
+        clip-path: inset(50% 0 15% 0)
+      }
+
+      82% {
+        transform: translate(12px, -3px);
+        clip-path: inset(70% 0 5% 0)
+      }
+
+      84%,
+      100% {
+        transform: translate(0);
+        clip-path: inset(0 0 0 0)
+      }
+    }
+
+    @keyframes pGlitch2 {
+
+      0%,
+      70% {
+        transform: translate(0);
+        clip-path: inset(0 0 0 0)
+      }
+
+      71% {
+        transform: translate(8px, 4px);
+        clip-path: inset(8% 0 55% 0)
+      }
+
+      73% {
+        transform: translate(-12px, -5px);
+        clip-path: inset(35% 0 30% 0)
+      }
+
+      75% {
+        transform: translate(7px, 5px);
+        clip-path: inset(60% 0 12% 0)
+      }
+
+      77% {
+        transform: translate(-9px, -4px);
+        clip-path: inset(80% 0 3% 0)
+      }
+
+      79%,
+      100% {
+        transform: translate(0);
+        clip-path: inset(0 0 0 0)
+      }
+    }
+
+    /* Scanlines */
+    .hero-portrait-glitch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, .1) 3px, rgba(0, 0, 0, .1) 4px);
+    }
 
 
-@media(max-width:1100px){
-  .hero-portrait-wrap{
-    position:relative;right:auto;top:auto;transform:none;
-    width:clamp(250px,55vw,380px);margin:2rem auto 0;
-    opacity:0;animation:fadeIn 1s 3.6s forwards;
-  }
-  .hero{flex-direction:column;justify-content:center}
-  .hero-content{order:1}
-  .hero-portrait-wrap{order:2}
-}
-@media(max-width:600px){
-  .hero-portrait-wrap{width:270px}
-}
+    @media(max-width:1100px) {
+      .hero-portrait-wrap {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        width: clamp(250px, 55vw, 380px);
+        margin: 2rem auto 0;
+        opacity: 0;
+        animation: fadeIn 1s 3.6s forwards;
+      }
 
-/* PROGRESS BAR */
-.progress-bar{
-  position:fixed;top:0;left:0;height:2px;background:var(--accent);
-  z-index:10001;width:0;transition:none;
-}
-</style>
+      .hero {
+        flex-direction: column;
+        justify-content: center
+      }
+
+      .hero-content {
+        order: 1
+      }
+
+      .hero-portrait-wrap {
+        order: 2
+      }
+    }
+
+    @media(max-width:600px) {
+      .hero-portrait-wrap {
+        width: 270px
+      }
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 10001;
+      width: 0;
+      transition: none;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- PROGRESS BAR -->
-<div class="progress-bar" id="progressBar"></div>
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar" id="progressBar"></div>
 
-<!-- CURSOR -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+  <!-- CURSOR -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- LOADER -->
-<div class="loader" id="loader">
-  <div class="loader-text">
-    <span style="animation-delay:.1s">W</span><span style="animation-delay:.15s">O</span><span style="animation-delay:.2s">R</span><span style="animation-delay:.25s">D</span><span style="animation-delay:.3s">S</span><span style="animation-delay:.45s">&nbsp;</span><span style="animation-delay:.5s">O</span><span style="animation-delay:.55s">F</span><span style="animation-delay:.7s">&nbsp;</span><span style="animation-delay:.75s">W</span><span style="animation-delay:.8s">A</span><span style="animation-delay:.85s">R</span>
-  </div>
-  <div class="loader-sub">A documented timeline</div>
-  <div class="loader-bar"></div>
-</div>
-
-<!-- NAV -->
-<nav>
-  <div class="logo">Words of War</div>
-  <div class="nav-right">
-    <a href="#timeline">Timeline</a>
-    <a href="#data">Data</a>
-    <a href="#footer">Sources</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg-text">WAR&nbsp;WAR&nbsp;WAR&nbsp;WAR&nbsp;WAR&nbsp;WAR&nbsp;WAR&nbsp;</div>
-  <div class="shape shape-circle" style="top:15%;left:10%"></div>
-  <div class="shape shape-line" style="top:70%;right:15%"></div>
-  <div class="hero-content">
-    <div class="hero-tag">March 11 — April 6, 2026</div>
-    <h1><span class="glitch" data-text="Words">Words</span> of <em>War</em></h1>
-    <p class="hero-desc">Every verified public statement by the 47th President of the United States on the Iran conflict — documented, timestamped, sourced.</p>
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-text">
+      <span style="animation-delay:.1s">W</span><span style="animation-delay:.15s">O</span><span
+        style="animation-delay:.2s">R</span><span style="animation-delay:.25s">D</span><span
+        style="animation-delay:.3s">S</span><span style="animation-delay:.45s">&nbsp;</span><span
+        style="animation-delay:.5s">O</span><span style="animation-delay:.55s">F</span><span
+        style="animation-delay:.7s">&nbsp;</span><span style="animation-delay:.75s">W</span><span
+        style="animation-delay:.8s">A</span><span style="animation-delay:.85s">R</span>
+    </div>
+    <div class="loader-sub">A documented timeline</div>
+    <div class="loader-bar"></div>
   </div>
 
-  <!-- PORTRAIT — PNG with transparent background -->
-  <div class="hero-portrait-wrap">
-    <div class="hero-portrait-glitch">
-      <img src="public/portrait-v02.png" alt="Portrait">
-      <div class="gl gl-1"><img src="public/portrait-v02.png" alt=""></div>
-      <div class="gl gl-2"><img src="public/portrait-v02.png" alt=""></div>
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Words of War</div>
+    <div class="nav-right">
+      <a href="#timeline">Timeline</a>
+      <a href="#data">Data</a>
+      <a href="#footer">Sources</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-text">WAR&nbsp;WAR&nbsp;WAR&nbsp;WAR&nbsp;WAR&nbsp;WAR&nbsp;WAR&nbsp;</div>
+    <div class="shape shape-circle" style="top:15%;left:10%"></div>
+    <div class="shape shape-line" style="top:70%;right:15%"></div>
+    <div class="hero-content">
+      <div class="hero-tag">March 11 — April 6, 2026</div>
+      <h1><span class="glitch" data-text="Words">Words</span> of <em>War</em></h1>
+      <p class="hero-desc">Every verified public statement by the 47th President of the United States on the Iran
+        conflict — documented, timestamped, sourced.</p>
+    </div>
+
+    <!-- PORTRAIT — PNG with transparent background -->
+    <div class="hero-portrait-wrap">
+      <div class="hero-portrait-glitch">
+        <img src="public/portrait-v02.png" alt="Portrait">
+        <div class="gl gl-1"><img src="public/portrait-v02.png" alt=""></div>
+        <div class="gl gl-2"><img src="public/portrait-v02.png" alt=""></div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee">
+    <div class="marquee-inner">
+      <span>March 2026</span><span class="filled">•</span>
+      <span>Iran</span><span class="filled">•</span>
+      <span>Strait of Hormuz</span><span class="filled">•</span>
+      <span>NATO</span><span class="filled">•</span>
+      <span>Ceasefire</span><span class="filled">•</span>
+      <span>Infrastructure</span><span class="filled">•</span>
+      <span>Nuclear</span><span class="filled">•</span>
+      <span>Deadline</span><span class="filled">•</span>
+      <span>March 2026</span><span class="filled">•</span>
+      <span>Iran</span><span class="filled">•</span>
+      <span>Strait of Hormuz</span><span class="filled">•</span>
+      <span>NATO</span><span class="filled">•</span>
+      <span>Ceasefire</span><span class="filled">•</span>
+      <span>Infrastructure</span><span class="filled">•</span>
+      <span>Nuclear</span><span class="filled">•</span>
+      <span>Deadline</span><span class="filled">•</span>
     </div>
   </div>
 
-  <div class="scroll-indicator">
-    <span>Scroll</span>
-    <div class="scroll-line"></div>
+  <!-- SECTION: TIMELINE -->
+  <div class="section-header" id="timeline">
+    <span class="section-tag">01 — Timeline</span>
+    <h2>27 days of<br>public statements</h2>
   </div>
-</section>
 
-<!-- MARQUEE -->
-<div class="marquee">
-  <div class="marquee-inner">
-    <span>March 2026</span><span class="filled">•</span>
-    <span>Iran</span><span class="filled">•</span>
-    <span>Strait of Hormuz</span><span class="filled">•</span>
-    <span>NATO</span><span class="filled">•</span>
-    <span>Ceasefire</span><span class="filled">•</span>
-    <span>Infrastructure</span><span class="filled">•</span>
-    <span>Nuclear</span><span class="filled">•</span>
-    <span>Deadline</span><span class="filled">•</span>
-    <span>March 2026</span><span class="filled">•</span>
-    <span>Iran</span><span class="filled">•</span>
-    <span>Strait of Hormuz</span><span class="filled">•</span>
-    <span>NATO</span><span class="filled">•</span>
-    <span>Ceasefire</span><span class="filled">•</span>
-    <span>Infrastructure</span><span class="filled">•</span>
-    <span>Nuclear</span><span class="filled">•</span>
-    <span>Deadline</span><span class="filled">•</span>
+  <div class="timeline" id="timelineContainer"></div>
+
+  <!-- FEATURED QUOTE -->
+  <section class="featured-quote" id="featuredQuote">
+    <div class="bg-date">APR 02</div>
+    <blockquote>
+      <p id="featuredText"></p>
+      <cite>— Donald J. Trump, April 2, 2026 · Reuters</cite>
+    </blockquote>
+  </section>
+
+  <!-- STATS -->
+  <div class="section-header" id="data">
+    <span class="section-tag">02 — By the numbers</span>
+    <h2>Quantifying the<br>rhetoric</h2>
   </div>
-</div>
+  <div class="stats" id="statsGrid"></div>
 
-<!-- SECTION: TIMELINE -->
-<div class="section-header" id="timeline">
-  <span class="section-tag">01 — Timeline</span>
-  <h2>27 days of<br>public statements</h2>
-</div>
+  <!-- FOOTER -->
+  <footer id="footer">
+    <p>Words of War — A Timeline Project</p>
+    <p class="disclaimer">All quotations sourced from Reuters wire reporting or indexed Truth Social posts. This site is
+      a documentary archive and does not express editorial opinion. Links to original sources are provided for each
+      entry.</p>
+    <p style="margin-top:1rem;opacity:.4">April 2026</p>
+  </footer>
 
-<div class="timeline" id="timelineContainer"></div>
+  <script>
+    const data = [
+      { date: "2026-03-11", quote: "You never like to say too early you won. We won. In the first hour it was over.", source: "Reuters", link: "https://www.reuters.com/world/iran-war-live-tehran-continues-fire-israel-targets-across-middle-east-2026-03-11/" },
+      { date: "2026-03-17", quote: "very foolish mistake", context: "Trump said NATO\u2019s refusal to help was a \u2018very foolish mistake.\u2019", source: "Reuters", link: "https://www.reuters.com/world/middle-east/nato-countries-dont-want-get-involved-iran-operation-trump-says-2026-03-17/" },
+      { date: "2026-03-20", quote: "Without the U.S.A., NATO IS A PAPER TIGER!", extra: "Militarily WON", source: "Truth Social", link: "https://truthsocial.com/@realDonaldtrump/posts/116261796648776538" },
+      { date: "2026-03-24", quote: "making progress", context: "Trump said the U.S. was making progress toward ending the war and was talking to \u2018the right people\u2019 in Iran.", source: "Reuters", link: "https://www.reuters.com/world/asia-pacific/iran-sends-waves-missiles-into-israel-dismisses-trumps-talk-negotiations-fake-2026-03-24/" },
+      { date: "2026-03-24", quote: "They're going to make a deal. They did something yesterday that was amazing, actually,they gave us a present. The present arrived today. It was a very big present, worth a tremendous amount of money.", source: "ABC News", link: "https://abcnews.com/Politics/questions-swirl-status-peace-talks-trump-touts-progress/story?id=131360794" },
+      { date: "2026-03-31", quote: "We\u2019ll be leaving very soon", extra: "within two weeks, maybe two weeks, maybe three", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-us-could-end-war-in-iran-two-three-weeks-2026-03-31/" },
+      { date: "2026-03-31", quote: "some delayed courage, go to the strait and just TAKE IT", context: "Trump said countries hurt by the Strait of Hormuz closure should go take it.", source: "Reuters", link: "https://www.reuters.com/business/energy/giant-oil-tanker-off-dubai-hit-by-iranian-strike-trump-threatens-obliterate-iran-2026-03-31/" },
+      { date: "2026-04-02", quote: "We are going to hit them extremely hard over the next two to three weeks. We are going to bring them back to the Stone Ages, where they belong.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-threatens-strike-irans-bridges-electric-power-plants-2026-04-03/" },
+      { date: "2026-04-02", quote: "[The U.S. military] hasn\u2019t even started destroying what\u2019s left in Iran. Bridges next, then Electric Power Plants.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-threatens-strike-irans-bridges-electric-power-plants-2026-04-03/" },
+      { date: "2026-04-05", quote: "Tuesday will be Power Plant Day, and Bridge Day, all wrapped up in one, in Iran. There will be nothing like it!!!", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/" },
+      { date: "2026-04-05", quote: "Open the Fuckin\u2019 Strait, you crazy bastards, or you\u2019ll be living in Hell \u2014 JUST WATCH!", extra: "Praise be to Allah.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/" },
+      { date: "2026-04-05", quote: "The rescue was an Easter Miracle.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/" },
+      { date: "2026-04-05", quote: "we\u2019re blowing up the whole country", context: "On ABC, Trump said that if the conflict did not end quickly, \u2018we\u2019re blowing up the whole country,\u2019 and that there was \u2018very little\u2019 off the table.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/" },
+      { date: "2026-04-06", quote: "They made a proposal, and it\u2019s a significant proposal. It\u2019s a significant step. It\u2019s not good enough.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-tuesday-deadline-make-deal-with-iran-is-final-2026-04-06/" },
+      { date: "2026-04-06", quote: "I\u2019m not worried about it. You know what\u2019s a war crime? Having a nuclear weapon.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-tuesday-deadline-make-deal-with-iran-is-final-2026-04-06/" },
+      { date: "2026-04-06", quote: "At the end of 10, all hell\u2019s going to break out if you don\u2019t get there.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-tuesday-deadline-make-deal-with-iran-is-final-2026-04-06/" },
+      { date: "2026-04-06", quote: "Well they should do it but, again, the consequences are great. I mean, they were told, \u2018If you protest, you will be shot immediately.\u2019", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-iranians-should-rise-up-against-government-if-ceasefire-declared-2026-04-06/" },
+      { date: "2026-04-06", quote: "taken out", context: "Reuters reported Trump said Iran could be \u2018taken out\u2019 if no deal was reached by Tuesday night.", source: "Reuters", link: "https://www.reuters.com/world/us/trump-says-iran-could-be-taken-out-tuesday-night-2026-04-06/" }
+    ];
 
-<!-- FEATURED QUOTE -->
-<section class="featured-quote" id="featuredQuote">
-  <div class="bg-date">APR 02</div>
-  <blockquote>
-    <p id="featuredText"></p>
-    <cite>— Donald J. Trump, April 2, 2026 · Reuters</cite>
-  </blockquote>
-</section>
-
-<!-- STATS -->
-<div class="section-header" id="data">
-  <span class="section-tag">02 — By the numbers</span>
-  <h2>Quantifying the<br>rhetoric</h2>
-</div>
-<div class="stats" id="statsGrid"></div>
-
-<!-- FOOTER -->
-<footer id="footer">
-  <p>Words of War — A Timeline Project</p>
-  <p class="disclaimer">All quotations sourced from Reuters wire reporting or indexed Truth Social posts. This site is a documentary archive and does not express editorial opinion. Links to original sources are provided for each entry.</p>
-  <p style="margin-top:1rem;opacity:.4">April 2026</p>
-</footer>
-
-<script>
-const data = [
-  {date:"2026-03-11",quote:"You never like to say too early you won. We won. In the first hour it was over.",source:"Reuters",link:"https://www.reuters.com/world/iran-war-live-tehran-continues-fire-israel-targets-across-middle-east-2026-03-11/"},
-  {date:"2026-03-17",quote:"very foolish mistake",context:"Trump said NATO\u2019s refusal to help was a \u2018very foolish mistake.\u2019",source:"Reuters",link:"https://www.reuters.com/world/middle-east/nato-countries-dont-want-get-involved-iran-operation-trump-says-2026-03-17/"},
-  {date:"2026-03-20",quote:"Without the U.S.A., NATO IS A PAPER TIGER!",extra:"Militarily WON",source:"Truth Social",link:"https://truthsocial.com/@realDonaldtrump/posts/116261796648776538"},
-  {date:"2026-03-24",quote:"making progress",context:"Trump said the U.S. was making progress toward ending the war and was talking to \u2018the right people\u2019 in Iran.",source:"Reuters",link:"https://www.reuters.com/world/asia-pacific/iran-sends-waves-missiles-into-israel-dismisses-trumps-talk-negotiations-fake-2026-03-24/"},
-  {date:"2026-03-31",quote:"We\u2019ll be leaving very soon",extra:"within two weeks, maybe two weeks, maybe three",source:"Reuters",link:"https://www.reuters.com/world/middle-east/trump-says-us-could-end-war-in-iran-two-three-weeks-2026-03-31/"},
-  {date:"2026-03-31",quote:"some delayed courage, go to the strait and just TAKE IT",context:"Trump said countries hurt by the Strait of Hormuz closure should go take it.",source:"Reuters",link:"https://www.reuters.com/business/energy/giant-oil-tanker-off-dubai-hit-by-iranian-strike-trump-threatens-obliterate-iran-2026-03-31/"},
-  {date:"2026-04-02",quote:"We are going to hit them extremely hard over the next two to three weeks. We are going to bring them back to the Stone Ages, where they belong.",source:"Reuters",link:"https://www.reuters.com/world/middle-east/trump-threatens-strike-irans-bridges-electric-power-plants-2026-04-03/"},
-  {date:"2026-04-02",quote:"[The U.S. military] hasn\u2019t even started destroying what\u2019s left in Iran. Bridges next, then Electric Power Plants.",source:"Reuters",link:"https://www.reuters.com/world/middle-east/trump-threatens-strike-irans-bridges-electric-power-plants-2026-04-03/"},
-  {date:"2026-04-05",quote:"Tuesday will be Power Plant Day, and Bridge Day, all wrapped up in one, in Iran. There will be nothing like it!!!",source:"Reuters",link:"https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/"},
-  {date:"2026-04-05",quote:"Open the Fuckin\u2019 Strait, you crazy bastards, or you\u2019ll be living in Hell \u2014 JUST WATCH!",extra:"Praise be to Allah.",source:"Reuters",link:"https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/"},
-  {date:"2026-04-05",quote:"The rescue was an Easter Miracle.",source:"Reuters",link:"https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/"},
-  {date:"2026-04-05",quote:"we\u2019re blowing up the whole country",context:"On ABC, Trump said that if the conflict did not end quickly, \u2018we\u2019re blowing up the whole country,\u2019 and that there was \u2018very little\u2019 off the table.",source:"Reuters",link:"https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/"},
-  {date:"2026-04-06",quote:"They made a proposal, and it\u2019s a significant proposal. It\u2019s a significant step. It\u2019s not good enough.",source:"Reuters",link:"https://www.reuters.com/world/middle-east/trump-says-tuesday-deadline-make-deal-with-iran-is-final-2026-04-06/"},
-  {date:"2026-04-06",quote:"I\u2019m not worried about it. You know what\u2019s a war crime? Having a nuclear weapon.",source:"Reuters",link:"https://www.reuters.com/world/middle-east/trump-says-tuesday-deadline-make-deal-with-iran-is-final-2026-04-06/"},
-  {date:"2026-04-06",quote:"At the end of 10, all hell\u2019s going to break out if you don\u2019t get there.",source:"Reuters",link:"https://www.reuters.com/world/middle-east/trump-says-tuesday-deadline-make-deal-with-iran-is-final-2026-04-06/"},
-  {date:"2026-04-06",quote:"Well they should do it but, again, the consequences are great. I mean, they were told, \u2018If you protest, you will be shot immediately.\u2019",source:"Reuters",link:"https://www.reuters.com/world/middle-east/trump-says-iranians-should-rise-up-against-government-if-ceasefire-declared-2026-04-06/"},
-  {date:"2026-04-06",quote:"taken out",context:"Reuters reported Trump said Iran could be \u2018taken out\u2019 if no deal was reached by Tuesday night.",source:"Reuters",link:"https://www.reuters.com/world/us/trump-says-iran-could-be-taken-out-tuesday-night-2026-04-06/"}
-];
-
-function fmtDate(d){
-  const dt=new Date(d+'T00:00:00');
-  return dt.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-}
-
-// BUILD TIMELINE
-const tl=document.getElementById('timelineContainer');
-data.forEach((item,i)=>{
-  const div=document.createElement('div');
-  div.className='timeline-item';
-  div.style.transitionDelay=`${(i%4)*0.08}s`;
-  let html=`<span class="timeline-date">${fmtDate(item.date)}</span>`;
-  html+=`<div class="timeline-quote">${item.quote}</div>`;
-  if(item.extra) html+=`<div class="timeline-context" style="font-family:var(--serif);font-style:italic;color:var(--accent2);opacity:.7">\u201C${item.extra}\u201D</div>`;
-  if(item.context) html+=`<div class="timeline-context">${item.context}</div>`;
-  html+=`<a class="timeline-source" href="${item.link}" target="_blank" rel="noopener">${item.source} \u2197</a>`;
-  div.innerHTML=html;
-  tl.appendChild(div);
-});
-
-// FEATURED QUOTE
-const featuredRaw="We are going to bring them back to the Stone Ages, where they belong.";
-const featuredEl=document.getElementById('featuredText');
-featuredRaw.split(' ').forEach((w,i)=>{
-  const span=document.createElement('span');
-  span.className='word';
-  span.textContent=w+' ';
-  span.style.transitionDelay=`${i*0.06}s`;
-  featuredEl.appendChild(span);
-});
-
-// STATS
-const statsData=[
-  {num:'17',label:'Verified Statements'},
-  {num:'27',label:'Days Documented'},
-  {num:'16',label:'Reuters Sources'},
-  {num:'1',label:'Truth Social Post'},
-];
-const sg=document.getElementById('statsGrid');
-statsData.forEach(s=>{
-  const div=document.createElement('div');
-  div.className='stat';
-  div.innerHTML=`<div class="stat-num">${s.num}</div><span class="stat-label">${s.label}</span>`;
-  sg.appendChild(div);
-});
-
-// INTERSECTION OBSERVER
-const observer=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting) e.target.classList.add('visible');
-  });
-},{threshold:0.15,rootMargin:'0px 0px -50px 0px'});
-document.querySelectorAll('.timeline-item, .stat, .featured-quote').forEach(el=>observer.observe(el));
-
-// LOADER
-setTimeout(()=>document.getElementById('loader').classList.add('done'),3200);
-
-// CUSTOM CURSOR
-const dot=document.getElementById('cursorDot');
-const ring=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.transform=`translate(${mx-4}px,${my-4}px)`});
-function animateRing(){
-  rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
-  ring.style.transform=`translate(${rx-20}px,${ry-20}px)`;
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-
-document.querySelectorAll('a,.timeline-source').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ring.style.width='60px';ring.style.height='60px'});
-  el.addEventListener('mouseleave',()=>{ring.style.width='40px';ring.style.height='40px'});
-});
-
-// COUNTER ANIMATION
-const counters=document.querySelectorAll('.stat-num');
-const counterObs=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting&&!e.target.dataset.counted){
-      e.target.dataset.counted='1';
-      const target=parseInt(e.target.textContent);
-      let current=0;
-      const step=Math.max(1,Math.floor(target/30));
-      const interval=setInterval(()=>{
-        current+=step;
-        if(current>=target){current=target;clearInterval(interval)}
-        e.target.textContent=current;
-      },40);
+    function fmtDate(d) {
+      const dt = new Date(d + 'T00:00:00');
+      return dt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     }
-  });
-},{threshold:0.5});
-counters.forEach(c=>counterObs.observe(c));
 
-// PARALLAX SHAPES
-document.addEventListener('scroll',()=>{
-  const st=window.scrollY;
-  document.querySelectorAll('.shape-circle').forEach(s=>{
-    s.style.transform=`translateY(${st*0.08}px)`;
-  });
-  document.querySelectorAll('.shape-line').forEach(s=>{
-    s.style.transform=`rotate(-30deg) translateY(${st*0.05}px)`;
-  });
-});
+    // BUILD TIMELINE
+    const tl = document.getElementById('timelineContainer');
+    data.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'timeline-item';
+      div.style.transitionDelay = `${(i % 4) * 0.08}s`;
+      let html = `<span class="timeline-date">${fmtDate(item.date)}</span>`;
+      html += `<div class="timeline-quote">${item.quote}</div>`;
+      if (item.extra) html += `<div class="timeline-context" style="font-family:var(--serif);font-style:italic;color:var(--accent2);opacity:.7">\u201C${item.extra}\u201D</div>`;
+      if (item.context) html += `<div class="timeline-context">${item.context}</div>`;
+      html += `<a class="timeline-source" href="${item.link}" target="_blank" rel="noopener">${item.source} \u2197</a>`;
+      div.innerHTML = html;
+      tl.appendChild(div);
+    });
 
-// PROGRESS BAR
-const pb=document.getElementById('progressBar');
-window.addEventListener('scroll',()=>{
-  const h=document.documentElement.scrollHeight-window.innerHeight;
-  const pct=(window.scrollY/h)*100;
-  pb.style.width=pct+'%';
-});
+    // FEATURED QUOTE
+    const featuredRaw = "We are going to bring them back to the Stone Ages, where they belong.";
+    const featuredEl = document.getElementById('featuredText');
+    featuredRaw.split(' ').forEach((w, i) => {
+      const span = document.createElement('span');
+      span.className = 'word';
+      span.textContent = w + ' ';
+      span.style.transitionDelay = `${i * 0.06}s`;
+      featuredEl.appendChild(span);
+    });
 
-// Hide cursor on touch
-if('ontouchstart' in window){
-  dot.style.display='none';
-  ring.style.display='none';
-  document.body.style.cursor='auto';
-}
-</script>
+    // STATS
+    const statsData = [
+      { num: '17', label: 'Verified Statements' },
+      { num: '27', label: 'Days Documented' },
+      { num: '16', label: 'Reuters Sources' },
+      { num: '1', label: 'Truth Social Post' },
+    ];
+    const sg = document.getElementById('statsGrid');
+    statsData.forEach(s => {
+      const div = document.createElement('div');
+      div.className = 'stat';
+      div.innerHTML = `<div class="stat-num">${s.num}</div><span class="stat-label">${s.label}</span>`;
+      sg.appendChild(div);
+    });
+
+    // INTERSECTION OBSERVER
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.timeline-item, .stat, .featured-quote').forEach(el => observer.observe(el));
+
+    // LOADER
+    setTimeout(() => document.getElementById('loader').classList.add('done'), 3200);
+
+    // CUSTOM CURSOR
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx - 4}px,${my - 4}px)` });
+    function animateRing() {
+      rx += (mx - rx) * .12; ry += (my - ry) * .12;
+      ring.style.transform = `translate(${rx - 20}px,${ry - 20}px)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a,.timeline-source').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.width = '60px'; ring.style.height = '60px' });
+      el.addEventListener('mouseleave', () => { ring.style.width = '40px'; ring.style.height = '40px' });
+    });
+
+    // COUNTER ANIMATION
+    const counters = document.querySelectorAll('.stat-num');
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !e.target.dataset.counted) {
+          e.target.dataset.counted = '1';
+          const target = parseInt(e.target.textContent);
+          let current = 0;
+          const step = Math.max(1, Math.floor(target / 30));
+          const interval = setInterval(() => {
+            current += step;
+            if (current >= target) { current = target; clearInterval(interval) }
+            e.target.textContent = current;
+          }, 40);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => counterObs.observe(c));
+
+    // PARALLAX SHAPES
+    document.addEventListener('scroll', () => {
+      const st = window.scrollY;
+      document.querySelectorAll('.shape-circle').forEach(s => {
+        s.style.transform = `translateY(${st * 0.08}px)`;
+      });
+      document.querySelectorAll('.shape-line').forEach(s => {
+        s.style.transform = `rotate(-30deg) translateY(${st * 0.05}px)`;
+      });
+    });
+
+    // PROGRESS BAR
+    const pb = document.getElementById('progressBar');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = (window.scrollY / h) * 100;
+      pb.style.width = pct + '%';
+    });
+
+    // Hide cursor on touch
+    if ('ontouchstart' in window) {
+      dot.style.display = 'none';
+      ring.style.display = 'none';
+      document.body.style.cursor = 'auto';
+    }
+  </script>
 </body>
+
 </html>
