@@ -1,12 +1,13 @@
 // Words of War — Source Data
 // Edit this file to update the timeline and statistics.
 // Each timeline entry supports:
-//   date    (required) — ISO date string "YYYY-MM-DD"
-//   quote   (required) — the primary statement
-//   context (optional) — a plain-text explanatory line
-//   extra   (optional) — a secondary italicized quote fragment
-//   source  (required) — label for the source (e.g. "Reuters", "Truth Social")
-//   link    (required) — URL to the original source
+//   date     (required) — ISO date string "YYYY-MM-DD"
+//   quote    (required) — the primary statement
+//   context  (optional) — a plain-text explanatory line
+//   extra    (optional) — a secondary italicized quote fragment
+//   source   (required) — label for the source (e.g. "Reuters", "Truth Social")
+//   link     (required) — URL to the original source
+//   reaction (optional) — filename to display below the source link
 
 const data = [
   { date: "2026-03-11", quote: "You never like to say too early you won. We won. In the first hour it was over.", source: "Reuters", link: "https://www.reuters.com/world/iran-war-live-tehran-continues-fire-israel-targets-across-middle-east-2026-03-11/" },
