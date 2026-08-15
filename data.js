@@ -61,7 +61,7 @@ const data = [
   { date: "2026-08-10", quote: "We're going to ask for money for the damage they've done over a 50-year period.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/iran-ties-hormuz-reopening-us-concessions-several-demands-2026-08-09/", reaction: "leonardo-dicaprio-sell-me-this-pen.gif" },
   { date: "2026-08-11", quote: "Hit them really, really hard.", context: "Trump described another major attack as one of the U.S. options for dealing with Iran.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-iran-options-are-let-tehran-fail-economically-or-hit-them-really-hard-2026-08-11/" },
   { date: "2026-08-12", quote: "The U.S.A. has total control over the Strait of Hormuz. I THINK WE WILL KEEP IT!", source: "Reuters", link: "https://www.reuters.com/world/trump-says-us-has-total-control-over-strait-hormuz-2026-08-12/", reaction: "im-not-leaving-wolf-of-wall-street.gif" },
-  { date: "2026-08-14", quote: "After we finish defeating Iran ... pretty soon I'll be declaring the Hormuz Strait a territory of the United States.", source: "Reuters", link: "https://www.reuters.com/world/us/trump-urges-americans-accept-higher-gas-prices-he-escalates-iran-rhetoric-2026-08-14/" }
+  { date: "2026-08-14", quote: "After we finish defeating Iran ... pretty soon I'll be declaring the Hormuz Strait a territory of the United States.", source: "Reuters", link: "https://www.reuters.com/world/us/trump-urges-americans-accept-higher-gas-prices-he-escalates-iran-rhetoric-2026-08-14/", reaction: "the-office-bankruptcy.gif" }
 ];
 
 // TL;DR summary rendered above the timeline.
