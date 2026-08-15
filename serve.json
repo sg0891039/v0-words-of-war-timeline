@@ -1,4 +1,7 @@
 {
+  "rewrites": [
+    { "source": "/images/:file*", "destination": "/public/images/:file*" }
+  ],
   "headers": [
     {
       "source": "**/*.@(js|css|html)",

@@ -392,6 +392,55 @@
       color: var(--fg);
     }
 
+    /* REACTIONS TOGGLE */
+    .reactions-toggle {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      margin-top: 2.5rem;
+    }
+
+    .reactions-toggle-label {
+      font-family: var(--mono);
+      font-size: .6rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .reactions-switch {
+      position: relative;
+      width: 42px;
+      height: 22px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      background: rgba(255, 255, 255, .04);
+      cursor: pointer;
+      padding: 0;
+      transition: background .3s, border-color .3s;
+    }
+
+    .reactions-switch[aria-checked="true"] {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .reactions-switch .switch-thumb {
+      position: absolute;
+      top: 50%;
+      left: 3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--fg);
+      transform: translateY(-50%);
+      transition: left .3s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .reactions-switch[aria-checked="true"] .switch-thumb {
+      left: 25px;
+    }
+
     /* TIMELINE */
     .timeline {
       position: relative;
@@ -547,6 +596,30 @@
     .timeline-source:hover {
       border-color: var(--accent);
       color: var(--accent)
+    }
+
+    /* REACTION IMAGE — fixed height keeps varying source sizes consistent */
+    .timeline-reaction {
+      display: block;
+      height: 150px;
+      width: auto;
+      max-width: 100%;
+      object-fit: cover;
+      margin-top: 1.25rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    .timeline-item:nth-child(odd) .timeline-reaction {
+      margin-left: auto;
+    }
+
+    .timeline-item:nth-child(even) .timeline-reaction {
+      margin-right: auto;
+    }
+
+    .timeline.reactions-hidden .timeline-reaction {
+      display: none;
     }
 
     /* FEATURED QUOTE */
@@ -1150,6 +1223,12 @@
     <span class="section-tag">01 — Timeline</span>
     <h2>Five months of<br>public statements</h2>
     <div class="summary" id="summaryList"></div>
+    <div class="reactions-toggle">
+      <span class="reactions-toggle-label">Reactions</span>
+      <button class="reactions-switch" id="reactionsSwitch" role="switch" aria-checked="true" aria-label="Toggle reaction images">
+        <span class="switch-thumb"></span>
+      </button>
+    </div>
   </div>
 
   <div class="timeline" id="timelineContainer"></div>
@@ -1233,8 +1312,17 @@
       if (item.extra) html += `<div class="timeline-context" style="font-family:var(--serif);font-style:italic;color:var(--accent2);opacity:.7">\u201C${item.extra}\u201D</div>`;
       if (item.context) html += `<div class="timeline-context">${item.context}</div>`;
       html += `<a class="timeline-source" href="${item.link}" target="_blank" rel="noopener">${item.source} \u2197</a>`;
+      if (item.reaction) html += `<img class="timeline-reaction" src="/images/${item.reaction}" alt="Reaction image" loading="lazy">`;
       div.innerHTML = html;
       tl.appendChild(div);
+    });
+
+    // REACTIONS TOGGLE (default on)
+    const reactionsSwitch = document.getElementById('reactionsSwitch');
+    reactionsSwitch.addEventListener('click', () => {
+      const on = reactionsSwitch.getAttribute('aria-checked') === 'true';
+      reactionsSwitch.setAttribute('aria-checked', String(!on));
+      tl.classList.toggle('reactions-hidden', on);
     });
 
     // FEATURED QUOTE (featuredRaw defined in data.js)
