@@ -1312,7 +1312,7 @@
       if (item.extra) html += `<div class="timeline-context" style="font-family:var(--serif);font-style:italic;color:var(--accent2);opacity:.7">\u201C${item.extra}\u201D</div>`;
       if (item.context) html += `<div class="timeline-context">${item.context}</div>`;
       html += `<a class="timeline-source" href="${item.link}" target="_blank" rel="noopener">${item.source} \u2197</a>`;
-      if (item.reaction) html += `<img class="timeline-reaction" src="/images/${item.reaction}" alt="Reaction image" loading="lazy">`;
+      if (item.reaction) html += `<img class="timeline-reaction" src="public/images/${item.reaction}" alt="Reaction image" loading="lazy">`;
       div.innerHTML = html;
       tl.appendChild(div);
     });
