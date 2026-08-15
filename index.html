@@ -369,6 +369,29 @@
       letter-spacing: -.03em;
     }
 
+    .summary {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 700px;
+      border-left: 2px solid var(--accent);
+      padding-left: 1.5rem;
+    }
+
+    .summary p {
+      font-family: var(--sans);
+      font-size: clamp(.85rem, 1.3vw, 1rem);
+      line-height: 1.7;
+      /* 20% dimmer than the prior #a19c98, shifted back toward --muted */
+      color: #938e8a;
+    }
+
+    .summary p strong {
+      font-weight: 700;
+      color: var(--fg);
+    }
+
     /* TIMELINE */
     .timeline {
       position: relative;
@@ -1079,7 +1102,7 @@
     <div class="shape shape-circle" style="top:15%;left:10%"></div>
     <div class="shape shape-line" style="top:70%;right:15%"></div>
     <div class="hero-content">
-      <div class="hero-tag">March 11 — April 7, 2026</div>
+      <div class="hero-tag" id="heroTag">March 11 — April 7, 2026</div>
       <h1><span class="glitch" data-text="Words">Words</span> of <em>War</em></h1>
       <p class="hero-desc">Verified public statements by the 47th President of the United States on the Illegal Iran War
         — documented, timestamped, sourced.</p>
@@ -1125,7 +1148,8 @@
   <!-- SECTION: TIMELINE -->
   <div class="section-header" id="timeline">
     <span class="section-tag">01 — Timeline</span>
-    <h2>28 days of<br>public statements</h2>
+    <h2>Five months of<br>public statements</h2>
+    <div class="summary" id="summaryList"></div>
   </div>
 
   <div class="timeline" id="timelineContainer"></div>
@@ -1152,35 +1176,50 @@
     <p class="disclaimer">All quotations sourced from Reuters wire reporting or indexed Truth Social posts. This site is
       a documentary archive and does not express editorial opinion. Links to original sources are provided for each
       entry.</p>
-    <p style="margin-top:1rem;opacity:.4">April 2026</p>
+    <p style="margin-top:1rem;opacity:.4">August 2026</p>
   </footer>
 
-  <script>
-    const data = [
-      { date: "2026-03-11", quote: "You never like to say too early you won. We won. In the first hour it was over.", source: "Reuters", link: "https://www.reuters.com/world/iran-war-live-tehran-continues-fire-israel-targets-across-middle-east-2026-03-11/" },
-      { date: "2026-03-17", quote: "very foolish mistake", context: "Trump said NATO\u2019s refusal to help was a \u2018very foolish mistake.\u2019", source: "Reuters", link: "https://www.reuters.com/world/middle-east/nato-countries-dont-want-get-involved-iran-operation-trump-says-2026-03-17/" },
-      { date: "2026-03-20", quote: "Without the U.S.A., NATO IS A PAPER TIGER!", extra: "Militarily WON", source: "Truth Social", link: "https://truthsocial.com/@realDonaldtrump/posts/116261796648776538" },
-      { date: "2026-03-24", quote: "making progress", context: "Trump said the U.S. was making progress toward ending the war and was talking to \u2018the right people\u2019 in Iran.", source: "Reuters", link: "https://www.reuters.com/world/asia-pacific/iran-sends-waves-missiles-into-israel-dismisses-trumps-talk-negotiations-fake-2026-03-24/" },
-      { date: "2026-03-24", quote: "They gave us a present and the ⁠present arrived today, and it was a very big present, ​worth a tremendous amount of money.", source: "Reuters", link: "https://www.reuters.com/world/asia-pacific/trump-us-is-talking-right-people-iran-says-tehran-badly-wants-deal-2026-03-24/" },
-      { date: "2026-03-31", quote: "We\u2019ll be leaving very soon", extra: "within two weeks, maybe two weeks, maybe three", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-us-could-end-war-in-iran-two-three-weeks-2026-03-31/" },
-      { date: "2026-03-31", quote: "some delayed courage, go to the strait and just TAKE IT", context: "Trump said countries hurt by the Strait of Hormuz closure should go take it.", source: "Reuters", link: "https://www.reuters.com/business/energy/giant-oil-tanker-off-dubai-hit-by-iranian-strike-trump-threatens-obliterate-iran-2026-03-31/" },
-      { date: "2026-04-02", quote: "We are going to hit them extremely hard over the next two to three weeks. We are going to bring them back to the Stone Ages, where they belong.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-threatens-strike-irans-bridges-electric-power-plants-2026-04-03/" },
-      { date: "2026-04-02", quote: "[The U.S. military] hasn\u2019t even started destroying what\u2019s left in Iran. Bridges next, then Electric Power Plants.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-threatens-strike-irans-bridges-electric-power-plants-2026-04-03/" },
-      { date: "2026-04-05", quote: "Tuesday will be Power Plant Day, and Bridge Day, all wrapped up in one, in Iran. There will be nothing like it!!!", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/" },
-      { date: "2026-04-05", quote: "Open the Fuckin\u2019 Strait, you crazy bastards, or you\u2019ll be living in Hell \u2014 JUST WATCH!", extra: "Praise be to Allah.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/" },
-      { date: "2026-04-05", quote: "The rescue was an Easter Miracle.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/" },
-      { date: "2026-04-05", quote: "we\u2019re blowing up the whole country", context: "On ABC, Trump said that if the conflict did not end quickly, \u2018we\u2019re blowing up the whole country,\u2019 and that there was \u2018very little\u2019 off the table.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-us-will-target-irans-infrastructure-tuesday-2026-04-05/" },
-      { date: "2026-04-06", quote: "They made a proposal, and it\u2019s a significant proposal. It\u2019s a significant step. It\u2019s not good enough.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-tuesday-deadline-make-deal-with-iran-is-final-2026-04-06/" },
-      { date: "2026-04-06", quote: "I\u2019m not worried about it. You know what\u2019s a war crime? Having a nuclear weapon.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-tuesday-deadline-make-deal-with-iran-is-final-2026-04-06/" },
-      { date: "2026-04-06", quote: "At the end of 10, all hell\u2019s going to break out if you don\u2019t get there.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-tuesday-deadline-make-deal-with-iran-is-final-2026-04-06/" },
-      { date: "2026-04-06", quote: "Well they should do it but, again, the consequences are great. I mean, they were told, \u2018If you protest, you will be shot immediately.\u2019", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-iranians-should-rise-up-against-government-if-ceasefire-declared-2026-04-06/" },
-      { date: "2026-04-06", quote: "taken out", context: "Reuters reported Trump said Iran could be \u2018taken out\u2019 if no deal was reached by Tuesday night.", source: "Reuters", link: "https://www.reuters.com/world/us/trump-says-iran-could-be-taken-out-tuesday-night-2026-04-06/" },
-      { date: "2026-04-07", quote: "A whole civilization will die tonight, never to be brought back again. I don\u2019t want that to happen, but it probably will.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-a-whole-civilization-will-die-tonight-if-iran-does-not-make-deal-2026-04-07/" }
-    ];
+  <!-- SOURCE DATA — edit data.js to update timeline entries and stats.
+       Bump the ?v= number below whenever you edit data.js to force browsers to reload it. -->
+  <script src="data.js?v=2"></script>
 
+  <script>
     function fmtDate(d) {
       const dt = new Date(d + 'T00:00:00');
       return dt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    }
+
+    // BUILD SUMMARY (summaryData defined in data.js)
+    // Bold the shifting-rationale chains (the "a → b → c" sequences).
+    // The chain runs from after the first colon to the end, so we bold that
+    // whole span — this keeps internal abbreviations like "U.S." intact.
+    const boldArrowChains = (text) => {
+      if (!text.includes('\u2192')) return text;
+      const i = text.indexOf(':');
+      if (i === -1) return text;
+      const head = text.slice(0, i + 1);
+      let chain = text.slice(i + 1);
+      const trail = (chain.match(/[.\s]*$/) || [''])[0];
+      chain = chain.slice(0, chain.length - trail.length);
+      return `${head}<strong>${chain}</strong>${trail}`;
+    };
+    const summaryEl = document.getElementById('summaryList');
+    if (summaryEl && typeof summaryData !== 'undefined') {
+      summaryData.forEach(text => {
+        const p = document.createElement('p');
+        p.innerHTML = boldArrowChains(text);
+        summaryEl.appendChild(p);
+      });
+    }
+
+    // DYNAMIC HERO DATE RANGE — first and last dates in the timeline data.
+    const heroTag = document.getElementById('heroTag');
+    if (heroTag && typeof data !== 'undefined' && data.length) {
+      const dates = data.map(d => d.date).sort();
+      const first = new Date(dates[0] + 'T00:00:00');
+      const last = new Date(dates[dates.length - 1] + 'T00:00:00');
+      const md = { month: 'long', day: 'numeric' };
+      heroTag.textContent = `${first.toLocaleDateString('en-US', md)} — ${last.toLocaleDateString('en-US', { ...md, year: 'numeric' })}`;
     }
 
     // BUILD TIMELINE
@@ -1198,8 +1237,7 @@
       tl.appendChild(div);
     });
 
-    // FEATURED QUOTE
-    const featuredRaw = "We are going to bring them back to the Stone Ages, where they belong.";
+    // FEATURED QUOTE (featuredRaw defined in data.js)
     const featuredEl = document.getElementById('featuredText');
     featuredRaw.split(' ').forEach((w, i) => {
       const span = document.createElement('span');
@@ -1209,13 +1247,7 @@
       featuredEl.appendChild(span);
     });
 
-    // STATS
-    const statsData = [
-      { num: '19', label: 'Verified Statements' },
-      { num: '29', label: 'Days Documented' },
-      { num: '18', label: 'Reuters Sources' },
-      { num: '1', label: 'Truth Social Post' },
-    ];
+    // STATS (statsData defined in data.js)
     const sg = document.getElementById('statsGrid');
     statsData.forEach(s => {
       const div = document.createElement('div');
