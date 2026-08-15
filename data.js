@@ -11,7 +11,7 @@
 
 const data = [
   {
-    date: "2026-03-11", quote: "You never like to say too early you won. We won. In the first hour it was over.", source: "Reuters", link: "https://www.reuters.com/world/iran-war-live-tehran-continues-fire-israel-targets-across-middle-east-2026-03-11/", reaction: "will-ferrell-anchorman-dont-believe.gif },
+    date: "2026-03-11", quote: "You never like to say too early you won. We won. In the first hour it was over.", source: "Reuters", link: "https://www.reuters.com/world/iran-war-live-tehran-continues-fire-israel-targets-across-middle-east-2026-03-11/", reaction: "will-ferrell-anchorman-dont-believe.gif" },
   { date: "2026-03-17", quote: "very foolish mistake", context: "Trump said NATO\u2019s refusal to help was a \u2018very foolish mistake.\u2019", source: "Reuters", link: "https://www.reuters.com/world/middle-east/nato-countries-dont-want-get-involved-iran-operation-trump-says-2026-03-17/" },
   { date: "2026-03-20", quote: "Without the U.S.A., NATO IS A PAPER TIGER!", extra: "Militarily WON", source: "Truth Social", link: "https://truthsocial.com/@realDonaldtrump/posts/116261796648776538" },
   { date: "2026-03-24", quote: "making progress", context: "Trump said the U.S. was making progress toward ending the war and was talking to \u2018the right people\u2019 in Iran.", source: "Reuters", link: "https://www.reuters.com/world/asia-pacific/iran-sends-waves-missiles-into-israel-dismisses-trumps-talk-negotiations-fake-2026-03-24/" },
