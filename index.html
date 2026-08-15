@@ -383,7 +383,12 @@
       font-family: var(--sans);
       font-size: clamp(.85rem, 1.3vw, 1rem);
       line-height: 1.7;
-      color: var(--muted);
+      color: var(--fg);
+    }
+
+    .summary p strong {
+      font-weight: 700;
+      color: var(--fg);
     }
 
     /* TIMELINE */
@@ -1096,7 +1101,7 @@
     <div class="shape shape-circle" style="top:15%;left:10%"></div>
     <div class="shape shape-line" style="top:70%;right:15%"></div>
     <div class="hero-content">
-      <div class="hero-tag">March 11 — April 7, 2026</div>
+      <div class="hero-tag" id="heroTag">March 11 — April 7, 2026</div>
       <h1><span class="glitch" data-text="Words">Words</span> of <em>War</em></h1>
       <p class="hero-desc">Verified public statements by the 47th President of the United States on the Illegal Iran War
         — documented, timestamped, sourced.</p>
@@ -1184,13 +1189,36 @@
     }
 
     // BUILD SUMMARY (summaryData defined in data.js)
+    // Bold the shifting-rationale chains (the "a → b → c" sequences).
+    // The chain runs from after the first colon to the end, so we bold that
+    // whole span — this keeps internal abbreviations like "U.S." intact.
+    const boldArrowChains = (text) => {
+      if (!text.includes('\u2192')) return text;
+      const i = text.indexOf(':');
+      if (i === -1) return text;
+      const head = text.slice(0, i + 1);
+      let chain = text.slice(i + 1);
+      const trail = (chain.match(/[.\s]*$/) || [''])[0];
+      chain = chain.slice(0, chain.length - trail.length);
+      return `${head}<strong>${chain}</strong>${trail}`;
+    };
     const summaryEl = document.getElementById('summaryList');
     if (summaryEl && typeof summaryData !== 'undefined') {
       summaryData.forEach(text => {
         const p = document.createElement('p');
-        p.textContent = text;
+        p.innerHTML = boldArrowChains(text);
         summaryEl.appendChild(p);
       });
+    }
+
+    // DYNAMIC HERO DATE RANGE — first and last dates in the timeline data.
+    const heroTag = document.getElementById('heroTag');
+    if (heroTag && typeof data !== 'undefined' && data.length) {
+      const dates = data.map(d => d.date).sort();
+      const first = new Date(dates[0] + 'T00:00:00');
+      const last = new Date(dates[dates.length - 1] + 'T00:00:00');
+      const md = { month: 'long', day: 'numeric' };
+      heroTag.textContent = `${first.toLocaleDateString('en-US', md)} — ${last.toLocaleDateString('en-US', { ...md, year: 'numeric' })}`;
     }
 
     // BUILD TIMELINE
