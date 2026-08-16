@@ -631,6 +631,20 @@
       padding: 6rem 3rem;
       position: relative;
       overflow: hidden;
+      background-color: var(--bg);
+      background-image: url("public/accordion-hands-v02.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+
+    /* dimming overlay so the quote stays readable */
+    .featured-quote::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: rgba(0, 0, 0, .6);
     }
 
     .featured-quote .bg-date {
@@ -648,7 +662,7 @@
     .featured-quote blockquote {
       position: relative;
       z-index: 2;
-      max-width: 900px;
+      max-width: 520px;
       text-align: center;
     }
 
@@ -662,6 +676,7 @@
 
     .featured-quote blockquote p .word {
       display: inline-block;
+      margin-right: .25em;
       opacity: 0;
       transform: translateY(30px) rotateX(-40deg);
       transition: opacity .5s, transform .5s cubic-bezier(.16, 1, .3, 1);
@@ -676,10 +691,10 @@
       display: block;
       margin-top: 2rem;
       font-family: var(--mono);
-      font-size: .6rem;
+      font-size: .75rem;
       letter-spacing: .3em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: #fff;
       font-style: normal;
     }
 
@@ -922,6 +937,26 @@
 
       .featured-quote {
         padding: 4rem 1.5rem
+      }
+    }
+
+    @media(max-width:700px) {
+      .featured-quote blockquote {
+        max-width: 52%;
+      }
+
+      .featured-quote blockquote p {
+        font-size: clamp(1rem, 4vw, 1.6rem);
+      }
+    }
+
+    @media(max-width:480px) {
+      .featured-quote blockquote {
+        max-width: 58%;
+      }
+
+      .featured-quote blockquote p {
+        font-size: clamp(.85rem, 4vw, 1.2rem);
       }
     }
 
@@ -1349,7 +1384,7 @@
     featuredRaw.split(' ').forEach((w, i) => {
       const span = document.createElement('span');
       span.className = 'word';
-      span.textContent = w + ' ';
+      span.textContent = w;
       span.style.transitionDelay = `${i * 0.06}s`;
       featuredEl.appendChild(span);
     });
