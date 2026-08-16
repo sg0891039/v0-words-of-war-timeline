@@ -631,6 +631,20 @@
       padding: 6rem 3rem;
       position: relative;
       overflow: hidden;
+      background-color: var(--bg);
+      background-image: url("public/accordion-hands-v02.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+
+    /* dimming overlay so the quote stays readable */
+    .featured-quote::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: rgba(0, 0, 0, .6);
     }
 
     .featured-quote .bg-date {
@@ -648,7 +662,7 @@
     .featured-quote blockquote {
       position: relative;
       z-index: 2;
-      max-width: 900px;
+      max-width: 520px;
       text-align: center;
     }
 
