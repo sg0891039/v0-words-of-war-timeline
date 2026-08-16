@@ -1312,10 +1312,29 @@
       if (item.extra) html += `<div class="timeline-context" style="font-family:var(--serif);font-style:italic;color:var(--accent2);opacity:.7">\u201C${item.extra}\u201D</div>`;
       if (item.context) html += `<div class="timeline-context">${item.context}</div>`;
       html += `<a class="timeline-source" href="${item.link}" target="_blank" rel="noopener">${item.source} \u2197</a>`;
-      if (item.reaction) html += `<img class="timeline-reaction" src="public/images/${item.reaction}" alt="Reaction image" loading="lazy">`;
+      if (item.reaction) {
+        if (/\.mp4$/i.test(item.reaction)) {
+          html += `<video class="timeline-reaction" src="public/images/${item.reaction}" loop muted playsinline preload="metadata" aria-label="Reaction clip"></video>`;
+        } else {
+          html += `<img class="timeline-reaction" src="public/images/${item.reaction}" alt="Reaction image" loading="lazy">`;
+        }
+      }
       div.innerHTML = html;
       tl.appendChild(div);
     });
+
+    // Play reaction clips only while they're on screen
+    const clipObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.play().catch(() => {});
+        } else {
+          entry.target.pause();
+        }
+      });
+    }, { rootMargin: '200px 0px' });
+
+    document.querySelectorAll('video.timeline-reaction').forEach((v) => clipObserver.observe(v));
 
     // REACTIONS TOGGLE (default on)
     const reactionsSwitch = document.getElementById('reactionsSwitch');
