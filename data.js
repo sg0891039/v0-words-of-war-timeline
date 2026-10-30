@@ -73,7 +73,12 @@ const data = [
   { date: "2026-09-09", quote: "I think war is going to end immediately after the election because they can't hold out any longer.", context: "Three weeks earlier, Trump said the midterms had \u2018nothing to do\u2019 with his thinking on Iran.", extra: "They're desperate to try and affect the election", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-iran-war-will-end-right-after-us-midterm-elections-2026-09-09/" },
   { date: "2026-09-09", quote: "I would advise Iran not to get cute because we will have to hit them very hard.", context: "Trump was referring to activity at Pickaxe Mountain, a fortified tunnel site near Natanz.", source: "Reuters", link: "https://www.reuters.com/world/trump-says-activity-seen-irans-pickaxe-mountain-urges-tehran-not-get-cute-2026-09-10/" },
   { date: "2026-09-10", quote: "I don't believe in the word 'regret.'", context: "Laura Ingraham asked Trump whether he regretted the war, given its possible effect on the midterms.", extra: "I would do exactly as I did", source: "Reuters", link: "https://www.reuters.com/world/trump-says-he-does-not-regret-iran-war-despite-impact-it-may-have-midterm-2026-09-11/" },
-  { date: "2026-09-13", quote: "We'll ultimately get out [of Iran], unless we decide to stay and keep the oil like Venezuela.", source: "Reuters", link: "https://www.reuters.com/business/energy/trump-says-us-could-stay-iran-keep-oil-like-venezuela-deal-2026-09-13/" }
+  { date: "2026-09-13", quote: "We'll ultimately get out [of Iran], unless we decide to stay and keep the oil like Venezuela.", source: "Reuters", link: "https://www.reuters.com/business/energy/trump-says-us-could-stay-iran-keep-oil-like-venezuela-deal-2026-09-13/" },
+  { date: "2026-10-06", quote: "Their leaders are gone, their second group of leaders are gone, and the biggest problem I have is nobody knows who the hell is running the country.", source: "Reuters", link: "https://www.reuters.com/world/middle-east/trump-says-nobody-knows-who-is-running-iran-2026-10-06/" },
+  { date: "2026-10-08", quote: "We will not be attacking Iran at any time prior to the Midterm Elections to be held in the United States on November 3rd.", context: "A month earlier, Trump told reporters he was \u2018not affected by the election.\u2019", extra: "IRAN WILL NOT HAVE A NUCLEAR WEAPON!", source: "The Guardian", link: "https://www.theguardian.com/us-news/2026/oct/08/trump-iran-pause-attack-midterms" },
+  { date: "2026-10-23", quote: "[We] may do another Epic Fury.", context: "Epic Fury was the bombing campaign against Iran at the start of the war. Trump said this at a rally in Florida.", source: "Al Jazeera", link: "https://www.aljazeera.com/news/2026/10/24/iran-says-wont-allow-us-warships-to-get-close-as-trump-ponders-new-attacks" },
+  { date: "2026-10-23", quote: "Don't worry. We'll take care of Cuba on our way back from Iran.", context: "An audience member at the Fort Myers, Florida, rally shouted, \u2018What about Cuba?\u2019", extra: "We don't even have to stop.", source: "Yahoo News", link: "https://www.yahoo.com/news/politics/articles/trump-us-care-cuba-iran-013029351.html" },
+  { date: "2026-10-30", quote: "It's going to get wrapped up soon.", context: "Trump said this in an interview with Kansas City radio station KCMO, four days before the midterms.", extra: "We need a guarantee there'll never be a nuclear weapon.", source: "Reuters", link: "https://www.reuters.com/world/trump-iran-war-its-going-get-wrapped-up-soon-2026-10-30/" }
 ];
 
 // TL;DR summary rendered above the timeline.
@@ -88,8 +93,8 @@ const featuredRaw = "We are going to bring them back to the Stone Ages, where th
 
 // "By the numbers" statistics grid.
 const statsData = [
-  { num: '62', label: 'Verified Statements' },
-  { num: '187', label: 'Days Documented' },
-  { num: '58', label: 'Reuters Sources' },
-  { num: '4', label: 'Other Sources' },
+  { num: '67', label: 'Verified Statements' },
+  { num: '234', label: 'Days Documented' },
+  { num: '60', label: 'Reuters Sources' },
+  { num: '7', label: 'Other Sources' },
 ];
