@@ -290,6 +290,45 @@
       animation: fadeIn .6s 3.8s forwards;
     }
 
+    .hero-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-top: 2.5rem;
+      padding: .9rem 1.5rem;
+      border-top: 1px solid rgba(196, 62, 42, .45);
+      border-bottom: 1px solid rgba(196, 62, 42, .45);
+      opacity: 0;
+      animation: fadeIn .6s 4.1s forwards;
+    }
+
+    .hero-counter-num {
+      font-family: var(--serif);
+      font-weight: 900;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1;
+      letter-spacing: -.03em;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hero-counter-label {
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+      text-align: left;
+      font-family: var(--mono);
+      font-size: .6rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero-counter-label strong {
+      font-weight: 400;
+      color: var(--fg);
+    }
+
     .scroll-indicator {
       position: absolute;
       bottom: 3rem;
@@ -1214,6 +1253,13 @@
       <h1><span class="glitch" data-text="Words">Words</span> of <em>War</em></h1>
       <p class="hero-desc">Verified public statements by the 47th President of the United States on the Illegal Iran War
         — documented, timestamped, sourced.</p>
+      <div class="hero-counter" role="status" aria-live="polite">
+        <span class="hero-counter-num" id="warDayCount">—</span>
+        <span class="hero-counter-label">
+          <strong>Days of war</strong>
+          <span id="warStartLabel">Since February 28, 2026</span>
+        </span>
+      </div>
     </div>
 
     <!-- PORTRAIT — PNG with transparent background -->
@@ -1335,6 +1381,24 @@
       const md = { month: 'long', day: 'numeric' };
       heroTag.textContent = `${first.toLocaleDateString('en-US', md)} — ${last.toLocaleDateString('en-US', { ...md, year: 'numeric' })}`;
     }
+
+    // DAYS-OF-WAR COUNTER — counts calendar days since Operation Epic Fury began
+    // and re-renders at local midnight so it stays current on long-open tabs.
+    const WAR_START = '2026-02-28';
+    const warDayEl = document.getElementById('warDayCount');
+    const warStartEl = document.getElementById('warStartLabel');
+    if (warStartEl) warStartEl.textContent = `Since ${fmtDate(WAR_START)}`;
+    function updateWarDays() {
+      const [y, m, d] = WAR_START.split('-').map(Number);
+      const now = new Date();
+      const startUTC = Date.UTC(y, m - 1, d);
+      const todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+      const days = Math.max(0, Math.round((todayUTC - startUTC) / 86400000));
+      if (warDayEl) warDayEl.textContent = days.toLocaleString('en-US');
+      const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+      setTimeout(updateWarDays, nextMidnight - now + 1000);
+    }
+    updateWarDays();
 
     // BUILD TIMELINE
     const tl = document.getElementById('timelineContainer');
